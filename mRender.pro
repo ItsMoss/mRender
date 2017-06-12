@@ -26,11 +26,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mrender.cpp \
     shape.cpp \
-    renderer.cpp
+    renderer.cpp \
+    color.cpp \
+    renderglwidget.cpp
 
 HEADERS  += mrender.h \
     renderer.h \
     shape.h \
-    color.h
+    color.h \
+    renderglwidget.h
 
 FORMS    += mrender.ui
+
+RESOURCES += \
+    resources.qrc
+
+DISTFILES += \
+    vertex_shader.vsh \
+    frag_shader.fsh

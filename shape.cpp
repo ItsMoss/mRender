@@ -4,7 +4,7 @@ Shape::Shape() {
     qDebug() << "in Shape::Shape";
 }
 
-Shape::Shape(std::vector<point_t> ps) : points(ps) {
+Shape::Shape(std::vector<QVector3D> ps) : points(ps) {
     qDebug() << "in Shape::Shape";
 }
 
@@ -12,7 +12,7 @@ Shape::~Shape() {
     qDebug() << "in Shape::~Shape";
 }
 
-bool Shape::set_points(std::vector<point_t> ps) {
+bool Shape::set_points(std::vector<QVector3D> ps) {
     qDebug() << "in Shape::set_points";
     if (!points.empty()) {
         points.clear();
@@ -22,7 +22,7 @@ bool Shape::set_points(std::vector<point_t> ps) {
     return true;
 }
 
-std::vector<point_t> Shape::get_points() const {
+std::vector<QVector3D> Shape::get_points() const {
     qDebug() << "in Shape::get_points";
     return points;
 }

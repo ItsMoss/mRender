@@ -2,25 +2,28 @@
 #define SHAPE_H
 
 #include <QDebug>
+#include <QVector3D>
 #include <vector>
 
-struct point {
-    float x;
-    float y;
-    float z;
-};
-typedef struct point point_t;
 
-class Shape {
+class Shape : public QObject {
+    Q_OBJECT
+
+    std::vector<QVector3D> points;
+
 private:
-    std::vector<point_t> points;
 
 public:
     Shape();
-    Shape(std::vector<point_t> ps);
+    Shape(std::vector<QVector3D> ps);
     ~Shape();
-    bool set_points(std::vector<point_t> ps);
-    std::vector<point_t> get_points() const;
+    bool set_points(std::vector<QVector3D> ps);
+    std::vector<QVector3D> get_points() const;
+
+protected:
+
+public slots:
+
 };
 
 #endif // SHAPE_H

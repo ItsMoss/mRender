@@ -18,9 +18,9 @@ class mRender : public QMainWindow {
     Ui::mRender * ui;
     Renderer * renderer;
     Shape * shape;
-    color_t * color;
+    Color * color;
     std::map<QString, Shape> shapeMap;
-    std::map<QString, color_t> colorMap;
+    std::map<QString, Color> colorMap;
 
 private:
     void createShapeMap();

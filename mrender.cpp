@@ -9,9 +9,9 @@ mRender::mRender(QWidget *parent) : QMainWindow(parent), ui(new Ui::mRender) {
     createShapeMap();
     createColorMap();
 
-    color = new color_t;
+    color = new Color();
     shape = new Shape();
-    renderer = new Renderer(*shape, *color, ui->renderWidget);
+    renderer = new Renderer(ui->renderWidget, *shape, *color);
 
     updateShape();
     updateColor();
@@ -39,38 +39,38 @@ void mRender::createShapeMap() {
     qDebug() << "in mRender::createShapeMap";
     // create a bunch of points that will be used
     // top left
-    point_t tl = {-1, 1, 0};
+    QVector3D tl = QVector3D(-1, 1, 0);
     // top mid-left
-    point_t tml = {-0.5, 1, 0};
+    QVector3D tml = QVector3D(-0.5, 1, 0);
     // top mid
-    point_t tm = {0, 1, 0};
+    QVector3D tm = QVector3D(0, 1, 0);
     // top mid-right
-    point_t tmr = {0.5, 1, 0};
+    QVector3D tmr = QVector3D(0.5, 1, 0);
     // top right
-    point_t tr = {1, 1, 0};
+    QVector3D tr = QVector3D(1, 1, 0);
     // middle left
-    point_t ml = {-1, 0, 0};
+    QVector3D ml = QVector3D(-1, 0, 0);
     // middle mid-left
-    point_t mml = {-0.5, 0, 0};
+    QVector3D mml = QVector3D(-0.5, 0, 0);
     // middle mid
-    point_t mm = {0, 0, 0};
+    QVector3D mm = QVector3D(0, 0, 0);
     // middle mid-right
-    point_t mmr = {0.5, 0, 0};
+    QVector3D mmr = QVector3D(0.5, 0, 0);
     // middle right
-    point_t mr = {1, 0, 0};
+    QVector3D mr = QVector3D(1, 0, 0);
     // bottom left
-    point_t bl = {-1, -1, 0};
+    QVector3D bl = QVector3D(-1, -1, 0);
     // bottom mid-left
-    point_t bml = {-0.5, -1, 0};
+    QVector3D bml = QVector3D(-0.5, -1, 0);
     // bottom mid
-    point_t bm = {0, -1, 0};
+    QVector3D bm = QVector3D(0, -1, 0);
     // bottom mid-right
-    point_t bmr = {0.5, -1, 0};
+    QVector3D bmr = QVector3D(0.5, -1, 0);
     // bottom right
-    point_t br = {1, -1, 0};
+    QVector3D br = QVector3D(1, -1, 0);
 
     // create point vectors for shapes
-    std::vector<point_t> square, rect, penta, tri, trap;
+    std::vector<QVector3D> square, rect, penta, tri, trap;
     square.push_back(tl); square.push_back(bl); square.push_back(br); square.push_back(tr);
     rect.push_back(tml); rect.push_back(bml); rect.push_back(bmr); rect.push_back(tmr);
     penta.push_back(tm); penta.push_back(ml); penta.push_back(bml); penta.push_back(bmr); penta.push_back(mr);
@@ -87,11 +87,11 @@ void mRender::createShapeMap() {
 
 void mRender::createColorMap() {
     qDebug() << "in mRender::createColorMap";
-    colorMap[QString("Red")] = {255, 0, 0};
-    colorMap[QString("Yellow")] = {255, 255, 0};
-    colorMap[QString("Green")] = {0, 255, 0};
-    colorMap[QString("Blue")] = {0, 0, 255};
-    colorMap[QString("White")] = {255, 255, 255};
+    colorMap[QString("Red")] = Color(QVector3D(255, 0, 0));
+    colorMap[QString("Yellow")] = Color(QVector3D(255, 255, 0));
+    colorMap[QString("Green")] = Color(QVector3D(0, 255, 0));
+    colorMap[QString("Blue")] = Color(QVector3D(0, 0, 255));
+    colorMap[QString("White")] = Color(QVector3D(255, 255, 255));
 }
 
 
