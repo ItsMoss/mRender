@@ -16,6 +16,8 @@ private:
 public:
     Shape();
     Shape(std::vector<QVector3D> ps);
+    Shape(const Shape & rhs);
+    Shape & operator=(const Shape & rhs);
     ~Shape();
     bool set_points(std::vector<QVector3D> ps);
     std::vector<QVector3D> get_points() const;

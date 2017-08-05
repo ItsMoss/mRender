@@ -9,6 +9,8 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
+#include <QPainter>
+#include <QSurfaceFormat>
 #include <QVector3D>
 #include <utility>
 
@@ -17,20 +19,30 @@
 
 typedef std::pair<QVector3D, QVector3D> vertex_t;
 
+struct vertices {
+    float * data;
+    int size;
+};
+typedef struct vertices vertices_t;
+
 class RenderGLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
+    QOpenGLContext context;
+    QSurfaceFormat surfFormat;
     QOpenGLBuffer buffer;
     QOpenGLVertexArrayObject vao;
     QOpenGLShaderProgram * shaders;
-    std::vector<vertex_t> vertices;
+    vertices_t vertices;
+    bool contextSetup;
 
 private:
     void destroyGL();
+    void print_vertices() const;
 
 public:
     explicit RenderGLWidget(QWidget * parent = 0);
     ~RenderGLWidget();
     void reinitGL();
-    void setVertices(std::vector<vertex_t> verts);
+    void setVertices(std::vector<float> verts);
 
 protected:
     void initializeGL();

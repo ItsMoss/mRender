@@ -2,23 +2,31 @@
 #include "ui_mrender.h"
 
 mRender::mRender(QWidget *parent) : QMainWindow(parent), ui(new Ui::mRender) {
-    qDebug() << "in mRender::mRender";
+    // qDebug() << "in mRender::mRender";
     ui->setupUi(this);
+
+    // replace placeholder OpenGLWidget with RenderGLWidget
+    replacePlaceholderWidget();
 
     // create maps
     createShapeMap();
     createColorMap();
 
+    /*for (std::map<QString, Color>::iterator it = colorMap.begin(); it != colorMap.end(); ++it) {
+        qDebug() << "Color:" << it->first;
+        qDebug() << "RGB:" << it->second.get_color(false);
+    }*/
+
     color = new Color();
     shape = new Shape();
-    renderer = new Renderer(ui->renderWidget, *shape, *color);
+    renderer = new Renderer(renderWidget, *shape, *color);
 
     updateShape();
     updateColor();
 }
 
 mRender::~mRender() {
-    qDebug() << "in mRender::~mRender";
+    // qDebug() << "in mRender::~mRender";
     delete ui;
     if (color) {
         delete color;
@@ -35,8 +43,18 @@ mRender::~mRender() {
 }
 
 
+void mRender::replacePlaceholderWidget() {
+    // qDebug() << "in mRender::replacePlaceholderWidget";
+    QRect geo = ui->placeholderWidget->geometry();
+    delete ui->placeholderWidget;
+    renderWidget = new RenderGLWidget(this);
+    ui->verticalLayout->insertWidget(0, renderWidget);
+    renderWidget->setGeometry(geo);
+}
+
+
 void mRender::createShapeMap() {
-    qDebug() << "in mRender::createShapeMap";
+    // qDebug() << "in mRender::createShapeMap";
     // create a bunch of points that will be used
     // top left
     QVector3D tl = QVector3D(-1, 1, 0);
@@ -86,7 +104,7 @@ void mRender::createShapeMap() {
 
 
 void mRender::createColorMap() {
-    qDebug() << "in mRender::createColorMap";
+    // qDebug() << "in mRender::createColorMap";
     colorMap[QString("Red")] = Color(QVector3D(255, 0, 0));
     colorMap[QString("Yellow")] = Color(QVector3D(255, 255, 0));
     colorMap[QString("Green")] = Color(QVector3D(0, 255, 0));
@@ -96,7 +114,7 @@ void mRender::createColorMap() {
 
 
 void mRender::closeEvent(QCloseEvent * qce) {
-    qDebug() << "in mRender::closeEvent";
+    // qDebug() << "in mRender::closeEvent";
     if (color) {
         delete color;
         color = NULL;
@@ -131,7 +149,7 @@ void mRender::render() {
 
 
 void mRender::updateShape() {
-    qDebug() << "in mRender::updateShape";
+    // qDebug() << "in mRender::updateShape";
     QString shapeString;
     if (ui->squareRadioButton->isChecked()) {
         shapeString = "Square";
@@ -154,7 +172,7 @@ void mRender::updateShape() {
 
 
 void mRender::updateColor() {
-    qDebug() << "in mRender::updateColor";
+    // qDebug() << "in mRender::updateColor";
     QString colorString;
     if (ui->redRadioButton->isChecked()) {
         colorString = "Red";
@@ -172,5 +190,5 @@ void mRender::updateColor() {
         colorString = "White";
     }
     *color = colorMap[colorString];
-    qDebug() << "new Color: " << colorString;
+    qDebug() << "new Color: " << colorString << "(" << colorMap[colorString].get_color(false) << ")";
 }

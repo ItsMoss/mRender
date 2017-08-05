@@ -12,5 +12,16 @@ void main(void) {
 ^all the above code was provided in default Qt template (MOSS)
 */
 
+#version 330
+// inputs
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec3 color;
+// output
+out vec4 vColor;
+
+void main() {
+  gl_Position = vec4(position, 1.0);
+  vColor = vec4(color, 1.0);
+}
 
 

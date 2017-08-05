@@ -9,4 +9,12 @@ void main(void) {
 ^all the above code was provided in Qt default template (MOSS)
 */
 
+#version 330
+// input
+in vec4 vColor;
+// output
+out vec4 fColor;
 
+void main() {
+   fColor = vColor;
+}

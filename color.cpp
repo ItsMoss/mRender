@@ -10,6 +10,29 @@ Color::Color(QVector3D c) : red((size_t)c.x()), green((size_t)c.y()), blue((size
     validateColors(true);
 }
 
+Color::Color(const Color &rhs) {
+    red = rhs.red;
+    redNorm = rhs.redNorm;
+    green = rhs.green;
+    greenNorm = rhs.greenNorm;
+    blue = rhs.blue;
+    blueNorm = rhs.blueNorm;
+}
+
+Color & Color::operator=(const Color & rhs) {
+    if (this == &rhs) {
+        return *this;
+    }
+    red = rhs.red;
+    redNorm = rhs.redNorm;
+    green = rhs.green;
+    greenNorm = rhs.greenNorm;
+    blue = rhs.blue;
+    blueNorm = rhs.blueNorm;
+
+    return *this;
+}
+
 Color::~Color() {}
 
 void Color::validateColors(bool normalized) {
@@ -59,10 +82,10 @@ void Color::normalize() {
     redNorm = (float)red / 255.0f;
     greenNorm = (float)green / 255.0f;
     blueNorm = (float)blue / 255.0f;
-    validateColors(false);
+    validateColors(true);
 }
 
-QVector3D Color::get_color(bool normalized) const {
+QVector3D Color::get_color(bool normalized) {
     if (!normalized) {
         return QVector3D(red, green, blue);
     }

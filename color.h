@@ -22,9 +22,11 @@ public:
     Color();                                    // default constructor
     Color(size_t r, size_t g, size_t b);        // constructor
     Color(QVector3D c);                         // constructor
+    Color(const Color & rhs);                   // copy constructor
+    Color & operator=(const Color & rhs);       // assignment operator
     ~Color();                                   // destructor
     void normalize();                           // normalizes red, green, blue private variables and sets *Norm
-    QVector3D get_color(bool normalized) const; // gets (normalized) color information
+    QVector3D get_color(bool normalized);       // gets (normalized) color information
 
 protected:
 

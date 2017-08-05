@@ -16,6 +16,7 @@ class mRender : public QMainWindow {
     Q_OBJECT
 
     Ui::mRender * ui;
+    RenderGLWidget * renderWidget;
     Renderer * renderer;
     Shape * shape;
     Color * color;
@@ -23,6 +24,7 @@ class mRender : public QMainWindow {
     std::map<QString, Color> colorMap;
 
 private:
+    void replacePlaceholderWidget();
     void createShapeMap();
     void createColorMap();
 
