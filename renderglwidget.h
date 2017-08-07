@@ -2,12 +2,15 @@
 #define RENDERGLWIDGET_H
 
 #include <cstddef>
+#include <windows.h>
+#include <gl/GL.h>
 #include <QDebug>
 #include <QOpenGLBuffer>
 #include <QOpenGLContext>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
+#include <QOpenGLFunctions_4_0_Core>
 #include <QOpenGLShaderProgram>
 #include <QPainter>
 #include <QSurfaceFormat>
@@ -25,7 +28,7 @@ struct vertices {
 };
 typedef struct vertices vertices_t;
 
-class RenderGLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
+class RenderGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_0_Core {
     QOpenGLContext context;
     QSurfaceFormat surfFormat;
     QOpenGLBuffer buffer;
@@ -33,6 +36,9 @@ class RenderGLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     QOpenGLShaderProgram * shaders;
     vertices_t vertices;
     bool contextSetup;
+	bool verticesSetup;
+	vertices_t points;
+	vertices_t color;
 
 private:
     void destroyGL();

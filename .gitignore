@@ -1,0 +1,6 @@
+*.vcxproj*
+*.sln
+.vs/
+debug/
+release/
+ui_*

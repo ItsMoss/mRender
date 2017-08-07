@@ -1,11 +1,11 @@
 #include "shape.h"
 
 Shape::Shape() {
-    // qDebug() << "in Shape::Shape";
+    // // qDebug() << "in Shape::Shape";
 }
 
 Shape::Shape(std::vector<QVector3D> ps) : points(ps) {
-    // qDebug() << "in Shape::Shape";
+    // // qDebug() << "in Shape::Shape";
 }
 
 Shape::Shape(const Shape &rhs) {
@@ -21,11 +21,11 @@ Shape & Shape::operator=(const Shape & rhs) {
 }
 
 Shape::~Shape() {
-    // qDebug() << "in Shape::~Shape";
+    // // qDebug() << "in Shape::~Shape";
 }
 
 bool Shape::set_points(std::vector<QVector3D> ps) {
-    // qDebug() << "in Shape::set_points";
+    // // qDebug() << "in Shape::set_points";
     if (!points.empty()) {
         points.clear();
         points = ps;
@@ -35,6 +35,6 @@ bool Shape::set_points(std::vector<QVector3D> ps) {
 }
 
 std::vector<QVector3D> Shape::get_points() const {
-    // qDebug() << "in Shape::get_points";
+    // // qDebug() << "in Shape::get_points";
     return points;
 }
