@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <gl/GL.h>
 #include <QDebug>
+#include <QMouseEvent>
 #include <QOpenGLBuffer>
 #include <QOpenGLContext>
 #include <QOpenGLVertexArrayObject>
@@ -54,6 +55,7 @@ protected:
     void initializeGL();
     void resizeGL(int w, int h);
     void paintGL();
+    void mousePressEvent(QMouseEvent * qme);
 
 };
 

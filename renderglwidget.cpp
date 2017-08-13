@@ -208,3 +208,9 @@ void RenderGLWidget::paintGL() {
 
     painter.endNativePainting();
 }
+
+
+void RenderGLWidget::mousePressEvent(QMouseEvent * qme) {
+    qDebug() << qme->pos().x();
+    qDebug() << qme->pos().y();
+}
