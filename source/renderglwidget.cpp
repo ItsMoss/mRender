@@ -171,7 +171,7 @@ void RenderGLWidget::paintGL() {
 		return;
 	}
 
-	print_vertices();
+	// print_vertices();
 
     QPainter painter(this);
 
@@ -179,15 +179,14 @@ void RenderGLWidget::paintGL() {
     painter.beginNativePainting();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // define triangle
-    GLfloat shape[] = {-1, -1, 0,
-                       1, -1, 0,
-                       0, 1, 0};
-
     // draw shape
     glViewport(0, 0, width(), height());
-
-    glDisable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(-1, 1, -1, 1, -1, 1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 
     GLuint id;
     glGenVertexArrays(1, &id);
