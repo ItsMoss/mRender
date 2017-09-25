@@ -6,14 +6,10 @@
 #include <QVector3D>
 
 class Color : public QObject {
-    Q_OBJECT
+	Q_OBJECT
 
-    size_t red;         // 0 to 255 red content
-    size_t green;       // 0 to 255 green content
-    size_t blue;        // 0 to 255 blue content
-    float redNorm;      // 0 to 1 red content
-    float greenNorm;    // 0 to 1 green content
-    float blueNorm;     // 0 to 1 blue content
+	size_t rgb[3];			// rgb content from 0-255
+	float rgbnorm[3];		// normalized rgb content
 
 private:
     void validateColors(bool normalized);   // makes sure all private member color values are in valid ranges
@@ -26,7 +22,8 @@ public:
     Color & operator=(const Color & rhs);       // assignment operator
     ~Color();                                   // destructor
     void normalize();                           // normalizes red, green, blue private variables and sets *Norm
-    QVector3D get_color(bool normalized);       // gets (normalized) color information
+    QVector3D get_color_vec(bool normalized);   // gets (normalized) color information
+	float * get_color(bool normalized);			// gets (normalized) color information
 
 protected:
 

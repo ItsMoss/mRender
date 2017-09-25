@@ -6,8 +6,9 @@ RenderGLWidget::RenderGLWidget(QWidget *parent) : QOpenGLWidget(parent), shaders
 	vertices.size = 0;
 	points.data = NULL;
 	points.size = 0;
-	color.data = NULL;
-	color.size = 0;
+	color.size = 3;		// always 3 cause R, G, B
+	color.data = new float[color.size];
+	currentShape = NULL;
 	verticesSetup = false;
 }
 
@@ -30,13 +31,47 @@ void RenderGLWidget::destroyGL() {
     }
 }
 
-void RenderGLWidget::print_vertices() const {
-    // qDebug() << "{";
-    for (size_t i = 0; i < points.size; ++i ) {
-        qDebug() << points.data[i] << ", ";
+void RenderGLWidget::modify_points_for_square() {
+	float scaleFactor;
+	if (width() < height()) {
+		scaleFactor = (float)width() / height();
+		for (size_t i = 0; i < points.size / 3; ++i) {
+			float point8 = 0.8f;
+			if (points.data[3 * i + 1] < 0) {
+				point8 *= -1;
+			}
+			points.data[3 * i + 1] = point8 * scaleFactor;
+		}
+	}
+	else if (height() < width()) {
+		scaleFactor = (float)height() / width();
+		for (size_t i = 0; i < points.size / 3; ++i) {
+			float point8 = 0.8f;
+			if (points.data[3 * i] < 0) {
+				point8 *= -1;
+			}
+			points.data[3 * i] = point8 * scaleFactor;
+		}
+	}
+	print_vertices();
+}
 
-    }
-    // qDebug() << "}";
+void RenderGLWidget::print_vertices() const {
+	// qDebug() << "{";
+	for (size_t i = 0; i < points.size; ++i) {
+		qDebug() << points.data[i] << ", ";
+
+	}
+	// qDebug() << "}";
+}
+
+void RenderGLWidget::print_color() const {
+	// qDebug() << "{";
+	for (size_t i = 0; i < color.size; ++i) {
+		qDebug() << color.data[i] << ", ";
+
+	}
+	// qDebug() << "}";
 }
 
 void RenderGLWidget::reinitGL() {
@@ -45,7 +80,7 @@ void RenderGLWidget::reinitGL() {
     initializeGL();
 }
 
-void RenderGLWidget::setVertices(std::vector<float> verts) {
+void RenderGLWidget::set_vertices() {
     // qDebug() << "in RenderGLWidget::setVertices";
     // qDebug() << "data @: " << vertices.data;
     // qDebug() << "verts size: " << verts.size();
@@ -62,26 +97,30 @@ void RenderGLWidget::setVertices(std::vector<float> verts) {
 	if (points.data) {
 		delete[] points.data;
 	}
-	if (color.data) {
-		delete[] color.data;
-	}
 
 	// set points
-	points.size = verts.size() / 2;		// because only have the elements are for point values (other half for color)
+	std::vector<float> verts = currentShape->create_vertices();
+	points.size = (int)verts.size();
 	points.data = new float[points.size];
 	for (size_t i = 0; i < points.size; ++i) {
-		points.data[i] = verts[i + 3 * (i / 3)];	// want every other group of 3 elements
-	}
-
-	// set color
-	color.size = 3;		// always 3 cause R, G, B
-	color.data = new float[color.size];
-	for (size_t i = 0; i < color.size; ++i) {
-		color.data[i] = verts[i + 3];		// just need first three color elements
+		points.data[i] = verts[i];
 	}
 
 	verticesSetup = true;
+}
 
+void RenderGLWidget::set_shape(Shape * s) {
+	currentShape = s;
+	set_vertices();
+	print_vertices();
+}
+
+void RenderGLWidget::set_color(float * rgb) {
+	// set color
+	for (size_t i = 0; i < color.size; ++i) {
+		color.data[i] = rgb[i];
+	}
+	print_color();
 }
 
 void RenderGLWidget::initializeGL() {
@@ -144,7 +183,7 @@ void RenderGLWidget::resizeGL(int w, int h) {
 }
 
 void RenderGLWidget::paintGL() {
-    qDebug() << "in RenderGLWidget::paintGL";
+    // qDebug() << "in RenderGLWidget::paintGL";
 
     /*  --- HAD TROUBLE USING QT VBO & VAO'S SO NOT USING THIS FOR NOW... ---
 
@@ -179,6 +218,10 @@ void RenderGLWidget::paintGL() {
     painter.beginNativePainting();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	if (currentShape->get_name() == SQUARE) {
+		modify_points_for_square();
+	}
+
     // draw shape
     glViewport(0, 0, width(), height());
 	glDisable(GL_DEPTH_TEST);
@@ -187,10 +230,6 @@ void RenderGLWidget::paintGL() {
 	glOrtho(-1, 1, -1, 1, -1, 1);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
-    GLuint id;
-    glGenVertexArrays(1, &id);
-    glBindVertexArray(id);
 
     GLuint vbuff;
     glGenBuffers(1, &vbuff);
@@ -210,6 +249,6 @@ void RenderGLWidget::paintGL() {
 
 
 void RenderGLWidget::mousePressEvent(QMouseEvent * qme) {
-    qDebug() << qme->pos().x();
-    qDebug() << qme->pos().y();
+    // qDebug() << qme->pos().x();
+    // qDebug() << qme->pos().y();
 }

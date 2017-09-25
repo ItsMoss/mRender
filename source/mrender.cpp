@@ -18,7 +18,7 @@ mRender::mRender(QWidget *parent) : QMainWindow(parent), ui(new Ui::mRender) {
     }*/
 
     color = new Color();
-    shape = new Shape();
+    shape = new Shape(SQUARE);
     renderer = new Renderer(renderWidget, *shape, *color);
 
     updateShape();
@@ -58,55 +58,55 @@ void mRender::createShapeMap() {
     // // qDebug() << "in mRender::createShapeMap";
     // create a bunch of points that will be used
     // top left
-	QVector3D tl = QVector3D(-0.8, 0.8, 0);
+	QVector3D tl = QVector3D(-0.8f, 0.8f, 0.0f);
 	// top mid-left
-	QVector3D tml = QVector3D(-0.4, 0.8, 0);
+	QVector3D tml = QVector3D(-0.4f, 0.8f, 0.0f);
 	// top mid
-	QVector3D tm = QVector3D(0, 0.8, 0);
+	QVector3D tm = QVector3D(0.0f, 0.8f, 0.0f);
 	// top mid-right
-	QVector3D tmr = QVector3D(0.4, 0.8, 0);
+	QVector3D tmr = QVector3D(0.4f, 0.8f, 0.0f);
 	// top right
-	QVector3D tr = QVector3D(0.8, 0.8, 0);
+	QVector3D tr = QVector3D(0.8f, 0.8f, 0.0f);
 	// upper left
-	QVector3D ul = QVector3D(-0.8, 0.4, 0);
+	QVector3D ul = QVector3D(-0.8f, 0.4f, 0.0f);
 	// upper mid-left
-	QVector3D uml = QVector3D(-0.4, 0.4, 0);
+	QVector3D uml = QVector3D(-0.4f, 0.4f, 0.0f);
 	// upper mid
-	QVector3D um = QVector3D(0, 0.4, 0);
+	QVector3D um = QVector3D(0.0f, 0.4f, 0.0f);
 	// upper mid-right
-	QVector3D umr = QVector3D(0.4, 0.4, 0);
+	QVector3D umr = QVector3D(0.4f, 0.4f, 0.0f);
 	// upper right
-	QVector3D ur = QVector3D(0.8, 0.4, 0);
+	QVector3D ur = QVector3D(0.8f, 0.4f, 0.0f);
     // middle left
-    QVector3D ml = QVector3D(-0.8, 0, 0);
+    QVector3D ml = QVector3D(-0.8f, 0.0f, 0.0f);
     // middle mid-left
-    QVector3D mml = QVector3D(-0.4, 0, 0);
+    QVector3D mml = QVector3D(-0.4f, 0.0f, 0.0f);
     // middle mid
-    QVector3D mm = QVector3D(0, 0, 0);
+    QVector3D mm = QVector3D(0.0f, 0.0f, 0.0f);
     // middle mid-right
-    QVector3D mmr = QVector3D(0.4, 0, 0);
+    QVector3D mmr = QVector3D(0.4f, 0.0f, 0.0f);
     // middle right
-    QVector3D mr = QVector3D(0.8, 0, 0);
+    QVector3D mr = QVector3D(0.8f, 0.0f, 0.0f);
 	// lower left
-	QVector3D ll = QVector3D(-0.8, -0.4, 0);
+	QVector3D ll = QVector3D(-0.8f, -0.4f, 0.0f);
 	// lower mid-left
-	QVector3D lml = QVector3D(-0.4, -0.4, 0);
+	QVector3D lml = QVector3D(-0.4f, -0.4f, 0.0f);
 	// lower mid
-	QVector3D lm = QVector3D(0, -0.4, 0);
+	QVector3D lm = QVector3D(0.0f, -0.4f, 0.0f);
 	// lower mid-right
-	QVector3D lmr = QVector3D(0.4, -0.4, 0);
+	QVector3D lmr = QVector3D(0.4f, -0.4f, 0.0f);
 	// lower right
-	QVector3D lr = QVector3D(0.8, -0.4, 0);
+	QVector3D lr = QVector3D(0.8f, -0.4f, 0.0f);
 	// bottom left
-	QVector3D bl = QVector3D(-0.8, -0.8, 0);
+	QVector3D bl = QVector3D(-0.8f, -0.8f, 0.0f);
 	// bottom mid-left
-	QVector3D bml = QVector3D(-0.4, -0.8, 0);
+	QVector3D bml = QVector3D(-0.4f, -0.8f, 0.0f);
 	// bottom mid
-	QVector3D bm = QVector3D(0, -0.8, 0);
+	QVector3D bm = QVector3D(0.0f, -0.8f, 0.0f);
 	// bottom mid-right
-	QVector3D bmr = QVector3D(0.4, -0.8, 0);
+	QVector3D bmr = QVector3D(0.4f, -0.8f, 0.0f);
 	// bottom right
-	QVector3D br = QVector3D(0.8, -0.8, 0);
+	QVector3D br = QVector3D(0.8f, -0.8f, 0.0f);
 
     // create point vectors for shapes
     std::vector<QVector3D> square, rect, penta, tri, trap, hexa, septa, octa;
@@ -119,14 +119,14 @@ void mRender::createShapeMap() {
 	septa.push_back(tm); septa.push_back(umr); septa.push_back(lr); septa.push_back(bmr); septa.push_back(bml); septa.push_back(ll); septa.push_back(uml);
 	octa.push_back(tml); octa.push_back(tmr); octa.push_back(ur); octa.push_back(lr); octa.push_back(bmr); octa.push_back(bml); octa.push_back(ll); octa.push_back(ul);
 
-    shapeMap[QString("Square")] = Shape(square);
-    shapeMap[QString("Rectangle")] = Shape(rect);
-    shapeMap[QString("Pentagon")] = Shape(penta);
-    shapeMap[QString("Triangle")] = Shape(tri);
-	shapeMap[QString("Trapezoid")] = Shape(trap);
-	shapeMap[QString("Hexagon")] = Shape(hexa);
-	shapeMap[QString("Septagon")] = Shape(septa);
-	shapeMap[QString("Octagon")] = Shape(octa);
+    shapeMap[QString("Square")] = Shape(SQUARE, square);
+	shapeMap[QString("Rectangle")] = Shape(RECTANGLE , rect);
+    shapeMap[QString("Pentagon")] = Shape(PENTAGON, penta);
+    shapeMap[QString("Triangle")] = Shape(TRIANGLE, tri);
+	shapeMap[QString("Trapezoid")] = Shape(TRAPEZOID, trap);
+	shapeMap[QString("Hexagon")] = Shape(HEXAGON, hexa);
+	shapeMap[QString("Septagon")] = Shape(SEPTAGON, septa);
+	shapeMap[QString("Octagon")] = Shape(OCTAGON, octa);
 }
 
 

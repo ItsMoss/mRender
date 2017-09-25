@@ -14,7 +14,6 @@ class Renderer : public QObject {
     Color & color;                  // color of rendered shape
 
 private:
-    std::vector<float> createVertices() const;
 
 protected:
 

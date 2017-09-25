@@ -2,33 +2,34 @@
 
 Color::Color() {}
 
-Color::Color(size_t r, size_t g, size_t b) : red(r), green(g), blue(b) {
+Color::Color(size_t r, size_t g, size_t b) {
+	rgb[0] = r;
+	rgb[1] = g;
+	rgb[2] = b;
     validateColors(true);
 }
 
-Color::Color(QVector3D c) : red((size_t)c.x()), green((size_t)c.y()), blue((size_t)c.z()) {
+Color::Color(QVector3D c) {
+	rgb[0] = (size_t)c.x();
+	rgb[1] = (size_t)c.y();
+	rgb[2] = (size_t)c.z();
     validateColors(true);
 }
 
 Color::Color(const Color &rhs) {
-    red = rhs.red;
-    redNorm = rhs.redNorm;
-    green = rhs.green;
-    greenNorm = rhs.greenNorm;
-    blue = rhs.blue;
-    blueNorm = rhs.blueNorm;
+	for (size_t i = 0; i < 3; ++i) {
+		rgb[i] = rhs.rgb[i];
+		rgbnorm[i] = rhs.rgbnorm[i];
+	}
 }
 
 Color & Color::operator=(const Color & rhs) {
-    if (this == &rhs) {
-        return *this;
-    }
-    red = rhs.red;
-    redNorm = rhs.redNorm;
-    green = rhs.green;
-    greenNorm = rhs.greenNorm;
-    blue = rhs.blue;
-    blueNorm = rhs.blueNorm;
+	if (this != &rhs) {
+		for (size_t i = 0; i < 3; ++i) {
+			rgb[i] = rhs.rgb[i];
+			rgbnorm[i] = rhs.rgbnorm[i];
+		}
+	}
 
     return *this;
 }
@@ -36,61 +37,50 @@ Color & Color::operator=(const Color & rhs) {
 Color::~Color() {}
 
 void Color::validateColors(bool normalized) {
-    if (!normalized) {
-        if (red < 0) {
-            red = 0;
-        }
-        if (red > 255) {
-            red = 255;
-        }
-        if (green < 0) {
-            green = 0;
-        }
-        if (green > 255) {
-            green = 255;
-        }
-        if (blue < 0) {
-            blue = 0;
-        }
-        if (blue > 255) {
-            blue = 255;
-        }
+    if (normalized) {
+		for (size_t i = 0; i < 3; ++i) {
+			if (rgbnorm[i] < 0.0f) {
+				rgbnorm[i] = 0.0f;
+			}
+			else if (rgbnorm[i] > 1.0f) {
+				rgbnorm[i] = 1.0f;
+			}
+		}
     }
-    else {
-        if (redNorm < 0.0f) {
-            redNorm = 0.0f;
-        }
-        if (redNorm > 1.0f) {
-            redNorm = 1.0f;
-        }
-        if (greenNorm < 0.0f) {
-            greenNorm = 0.0f;
-        }
-        if (greenNorm > 1.0f) {
-            greenNorm = 1.0f;
-        }
-        if (blueNorm < 0.0f) {
-            blueNorm = 0.0f;
-        }
-        if (blueNorm > 1.0f) {
-            blueNorm = 1.0f;
-        }
-    }
+	for (size_t i = 0; i < 3; ++i) {
+		if (rgb[i] < 0) {
+			rgb[i] = 0;
+		}
+		else if (rgb[i] > 255) {
+			rgb[i] = 255;
+		}
+	}
+
 }
 
 void Color::normalize() {
-    redNorm = (float)red / 255.0f;
-    greenNorm = (float)green / 255.0f;
-    blueNorm = (float)blue / 255.0f;
+    rgbnorm[0] = (float)rgb[0] / 255.0f;
+    rgbnorm[1] = (float)rgb[1] / 255.0f;
+    rgbnorm[2] = (float)rgb[2] / 255.0f;
     validateColors(true);
 }
 
-QVector3D Color::get_color(bool normalized) {
+float * Color::get_color(bool normalized) {
+	if (!normalized) {
+		return (float *)rgb;
+	}
+	else {
+		normalize();    // in case this was not already called elsewhere (MOSS)
+		return rgbnorm;
+	}
+}
+
+QVector3D Color::get_color_vec(bool normalized) {
     if (!normalized) {
-        return QVector3D(red, green, blue);
+        return QVector3D(rgb[0], rgb[1], rgb[2]);
     }
     else {
         normalize();    // in case this was not already called elsewhere (MOSS)
-        return QVector3D(redNorm, greenNorm, blueNorm);
+        return QVector3D(rgbnorm[0], rgbnorm[1], rgbnorm[2]);
     }
 }

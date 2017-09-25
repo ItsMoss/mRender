@@ -17,17 +17,12 @@
 #include <QSurfaceFormat>
 #include <QVector3D>
 #include <utility>
+#include "Shape.h"
 
 #define POINT_ATTRIB 0
 #define COLOR_ATTRIB 1
 
 typedef std::pair<QVector3D, QVector3D> vertex_t;
-
-struct vertices {
-    float * data;
-    int size;
-};
-typedef struct vertices vertices_t;
 
 class RenderGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_0_Core {
     QOpenGLContext context;
@@ -40,16 +35,21 @@ class RenderGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_0_Core
 	bool verticesSetup;
 	vertices_t points;
 	vertices_t color;
+	Shape * currentShape;
 
 private:
     void destroyGL();
-    void print_vertices() const;
+	void set_vertices();
+	void print_vertices() const;
+	void print_color() const;
+	void modify_points_for_square();
 
 public:
     explicit RenderGLWidget(QWidget * parent = 0);
     ~RenderGLWidget();
     void reinitGL();
-    void setVertices(std::vector<float> verts);
+	void set_shape(Shape * s);
+	void set_color(float * rgb);
 
 protected:
     void initializeGL();
